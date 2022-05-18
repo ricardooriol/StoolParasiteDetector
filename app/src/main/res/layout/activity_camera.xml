@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/my_gradient_background"
+    tools:context=".Camera">
+
+    <Button
+        android:id="@+id/goBackButton"
+        android:layout_width="75dp"
+        android:layout_height="48dp"
+        android:background="@drawable/my_button_style"
+        android:text="@string/backButtonText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/takePictureButton"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:background="@drawable/my_button_style"
+        android:text="@string/takePictureButtonText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.621"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/uploadPictureButton"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:background="@drawable/my_button_style"
+        android:text="@string/uploadPictureButtonText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.76"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.621" />
+
+    <Button
+        android:id="@+id/savePictureButton"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:background="@drawable/my_button_style"
+        android:elevation="4dp"
+        android:text="@string/savePictureButtonText"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/cameraIntroductionText"
+        android:layout_width="330dp"
+        android:layout_height="233dp"
+        android:justificationMode="inter_word"
+        android:text="@string/pictureOptionsText"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35" />
+
+    <ImageView
+        android:id="@+id/takenPicture"
+        android:layout_width="415dp"
+        android:layout_height="600dp"
+        android:layout_margin="4dp"
+        android:elevation="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85"
+        tools:ignore="ImageContrastCheck"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/warningsText"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
