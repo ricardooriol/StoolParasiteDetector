@@ -33,33 +33,27 @@ import java.util.Calendar;
 
 public class Camera extends AppCompatActivity implements View.OnClickListener {
 
-    private ViewSwitcher viewSwitcher;
-    private ActivityResultLauncher<Intent> activityResultLauncher;
-    private Button savePictureButton;
-    private ImageView takenPicture;
-    private TextView cameraIntroductionText;
     private TextView warningsText;
     private Bitmap bitmap;
     private String currentPhotoPath;
     private int flag = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_version2);
-        Button goBackButton = findViewById(R.id.goBackButton);
-        viewSwitcher = findViewById(R.id.viewSwitcher);
+        ViewSwitcher viewSwitcher = findViewById(R.id.viewSwitcher);
         viewSwitcher.setDisplayedChild(R.id.cameraLayout);
+        Button goBackButton = findViewById(R.id.goBackButton);
         goBackButton.setOnClickListener(v -> goBack());
         Button takePictureButton = findViewById(R.id.takePictureButton);
         Button uploadPictureButton = findViewById(R.id.uploadPictureButton);
-        savePictureButton = findViewById(R.id.savePictureButton);
-        takenPicture = findViewById(R.id.takenPicture);
-        cameraIntroductionText = findViewById((R.id.cameraIntroductionText));
+        Button savePictureButton = findViewById(R.id.savePictureButton);
+        ImageView takenPicture = findViewById(R.id.takenPicture);
+        TextView cameraIntroductionText = findViewById((R.id.cameraIntroductionText));
         warningsText = findViewById(R.id.warningsText);
 
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             Object[] results = new Object[2];
             TensorflowImageProcessor tensorflowImageProcessor = new TensorflowImageProcessor();
 
