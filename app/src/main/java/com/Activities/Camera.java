@@ -1,7 +1,6 @@
 package com.Activities;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -33,6 +33,7 @@ import java.util.Calendar;
 
 public class Camera extends AppCompatActivity implements View.OnClickListener {
 
+    private ViewSwitcher viewSwitcher;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private Button savePictureButton;
     private ImageView takenPicture;
@@ -42,11 +43,14 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
     private String currentPhotoPath;
     private int flag = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_camera_version2);
         Button goBackButton = findViewById(R.id.goBackButton);
+        viewSwitcher = findViewById(R.id.viewSwitcher);
+        viewSwitcher.setDisplayedChild(R.id.cameraLayout);
         goBackButton.setOnClickListener(v -> goBack());
         Button takePictureButton = findViewById(R.id.takePictureButton);
         Button uploadPictureButton = findViewById(R.id.uploadPictureButton);
@@ -201,18 +205,8 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
         return snack;
     }
 
-    private ProgressDialog makeProgressDialog() {
-        ProgressDialog nDialog;
-        nDialog = new ProgressDialog(this.getApplicationContext());
-        nDialog.setMessage("Loading, please wait.");
-        nDialog.setIndeterminate(false);
-        nDialog.setCancelable(true);
-        return nDialog;
-    }
-
     @Override
     public void onClick(View view) {
 
     }
-
 }
