@@ -1,0 +1,48 @@
+{
+  "parasites": [
+    {
+      "id": 1,
+      "display_name": "Amebas"
+    },
+    {
+      "id": 2,
+      "display_name": "Ascaris lumbricoides"
+    },
+    {
+      "id": 3,
+      "display_name": "Balantidium coli"
+    },
+    {
+      "id": 4,
+      "display_name": "Diphyllobothrium latum"
+    },
+    {
+      "id": 5,
+      "display_name": "E.coli"
+    },
+    {
+      "id": 6,
+      "display_name": "Enterobius vermicularis"
+    },
+    {
+      "id": 7,
+      "display_name": "Giardia"
+    },
+    {
+      "id": 8,
+      "display_name": "Hymenolepis nana"
+    },
+    {
+      "id": 9,
+      "display_name": "Taenia"
+    },
+    {
+      "id": 10,
+      "display_name": "Trichuris trichura"
+    },
+    {
+      "id": 11,
+      "display_name": "Uncinarias"
+    }
+  ]
+}

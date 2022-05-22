@@ -1,15 +1,19 @@
 package com.Activities;
 
 import static android.graphics.Color.RED;
+import static android.graphics.Color.WHITE;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.tensorflow.framework.DataType;
 import org.tensorflow.framework.TensorProto;
 import org.tensorflow.framework.TensorShapeProto;
 
+import java.io.InputStream;
 import java.util.List;
 
 import io.grpc.ManagedChannel;
@@ -18,26 +22,51 @@ import tensorflow.serving.Model;
 import tensorflow.serving.Predict;
 import tensorflow.serving.PredictionServiceGrpc;
 
-public class TensorflowImageProcessor {
 
+public class TensorflowImageProcessor {
+    private ManagedChannel channel;
     private PredictionServiceGrpc.PredictionServiceBlockingStub stub;
+    private int numParasites = 0;
+    private MainActivity mainActivity = new MainActivity();
 
     public Object[] processImage(Object[] results) {
-        try {
-            Predict.PredictRequest request = createGRPCRequest((Bitmap) results[0]);
-            Predict.PredictResponse response = stub.predict(request);
-            postProcessGRPCResponse(response, results);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        if (mainActivity.internetConnection()) {
+            try {
+                Predict.PredictRequest request = createGRPCRequest((Bitmap) results[0]);
+                Predict.PredictResponse response = stub.predict(request);
+                postProcessGRPCResponse(response, results);
+                channel.shutdownNow();
+            } catch (Exception e) {
+                //THERE WAS AN UNEXPECTED ERROR
+                e.printStackTrace();
+                results[1] = 0;
+                channel.shutdownNow();
+                return results;
+            }
+        } else if (!mainActivity.internetConnection()) {
+            //THERE IS NO INTERNET CONNECTION
+            results[1] = 3;
+            channel.shutdownNow();
+            return results;
+        }
+        if (numParasites == 0) {
+            //NO PARASITES WERE DETECTED
+            results[1] = 2;
+        } else {
+            //IMAGE PROCESSED SUCCESSFULLY
+            results[1] = 1;
+        }
+        channel.shutdownNow();
         return results;
     }
+
 
     private Predict.PredictRequest createGRPCRequest(Bitmap bitmap) {
         String host = "3.128.144.86";
         int port = 8500;
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+        channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+
         if (stub == null) {
             stub = PredictionServiceGrpc.newBlockingStub(channel);
         }
@@ -67,7 +96,7 @@ public class TensorflowImageProcessor {
         int pixel;
         for (int i = 0; i < INPUT_IMG_HEIGHT; i++) {
             for (int j = 0; j < INPUT_IMG_WIDTH; j++) {
-                // Extract RBG values from each pixel; alpha is ignored.
+                // EXTRACT RGB VALUES FROM EACH PIXEL
                 pixel = inputImg[i * INPUT_IMG_WIDTH + j];
                 tensorProtoBuilder.addIntVal((pixel >> 16) & 0xff);
                 tensorProtoBuilder.addIntVal((pixel >> 8) & 0xff);
@@ -87,29 +116,68 @@ public class TensorflowImageProcessor {
 
     private void postProcessGRPCResponse(Predict.PredictResponse response, Object[] results) {
         try {
-            int maxIndex = 0;
+            //int maxIndex = 0;
             List<Float> detectionBoxes = response.getOutputsMap().get("detection_boxes").getFloatValList();
             List<Float> detectionScores = response.getOutputsMap().get("detection_scores").getFloatValList();
             float numDetections = response.getOutputsMap().get("num_detections").getFloatValList().get(0);
-            System.out.println(numDetections);
-            for (int j = 0; j < numDetections; j++) {
-                maxIndex = detectionScores.get(j) > detectionScores.get(maxIndex + 1) ? j : maxIndex;
+            for (int i = 0; i < numDetections; i++) {
+                if (detectionScores.get(i) < 0.8f) break;
+                //maxIndex = detectionScores.get(i) > detectionScores.get(maxIndex + 1) ? i : maxIndex;
+                float ymin = detectionBoxes.get(i * 4);
+                float xmin = detectionBoxes.get(i * 4 + 1);
+                float ymax = detectionBoxes.get(i * 4 + 2);
+                float xmax = detectionBoxes.get(i * 4 + 3);
+                List<Float> detectionClasses = response.getOutputsMap().get("detection_classes").getFloatValList();
+                float detectionClass = detectionClasses.get(i);
+                int parasiteID = (int) detectionClass;
+                String parasiteName = getParasiteName(parasiteID);
+                System.out.println(parasiteName);
+                results[0] = displayResult(results, ymin, xmin, ymax, xmax, parasiteName);
+                numParasites++;
             }
-            Float detectionClasses = response.getOutputsMap().get("detection_classes").getFloatValList().get(maxIndex);
-            System.out.println(detectionClasses);
-            float ymin = detectionBoxes.get(maxIndex * 4);
-            float xmin = detectionBoxes.get(maxIndex * 4 + 1);
-            float ymax = detectionBoxes.get(maxIndex * 4 + 2);
-            float xmax = detectionBoxes.get(maxIndex * 4 + 3);
-            displayResult(results, ymin, xmin, ymax, xmax);
         } catch (NullPointerException npe) {
-            results[1] = false;
+            npe.printStackTrace();
+
         }
-        results[1] = true;
     }
 
+    private String getParasiteName(int parasiteID) {
+        String parasiteName = null;
+        try {
+            String JSON = loadJSONFromAsset();
+            JSONObject object = new JSONObject(JSON);
+            JSONArray jsonArray = object.getJSONArray("parasites");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject parasite = jsonArray.getJSONObject(i);
 
-    private void displayResult(Object[] results, float ymin, float xmin, float ymax, float xmax) {
+                int id = (Integer) parasite.get("id");
+                if (id == parasiteID) {
+                    parasiteName = (String) parasite.get("display_name");
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return parasiteName;
+    }
+
+    private String loadJSONFromAsset() {
+        String JSON = null;
+        try {
+            InputStream is = mainActivity.getContext().getAssets().open("json/parasites_label_map.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            JSON = new String(buffer, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return JSON;
+    }
+
+    private Bitmap displayResult(Object[] results, float ymin, float xmin, float ymax, float xmax, String parasiteName) {
         Bitmap inputImgBitmap = (Bitmap) results[0];
         int INPUT_IMG_HEIGHT = inputImgBitmap.getHeight();
         int INPUT_IMG_WIDTH = inputImgBitmap.getWidth();
@@ -124,6 +192,11 @@ public class TensorflowImageProcessor {
         paint.setStrokeWidth(8);
         paint.setColor(RED);
         canvas.drawRect(left, top, right, bottom, paint);
+        paint.setStrokeWidth(4);
+        paint.setColor(WHITE);
+        paint.setTextSize(60);
+        canvas.drawText(parasiteName, top, right, paint);
+        numParasites++;
+        return resultInputBitmap;
     }
-
 }

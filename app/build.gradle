@@ -51,6 +51,7 @@ android {
 configurations {
     all*.exclude group: 'com.google.guava', module: 'listenableFuture'
     all*.exclude module: 'protobuf-javalite'
+    all*.exclude module: 'hamcrest-core'
 }
 
 //code to generate the protobuf files
@@ -104,6 +105,9 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.8.0'
     implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0'
     implementation group: 'org.tensorflow', name: 'tensorflow-core-platform', version: '0.4.1'
+
+    //JSON dependencies
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 
 }

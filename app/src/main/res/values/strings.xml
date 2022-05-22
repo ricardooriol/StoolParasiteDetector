@@ -48,4 +48,5 @@
     <string name="Amoeba"><a href="https://en.wikipedia.org/wiki/Amoeba">9. Amoeba</a></string>
     <string name="Giardia"><a href="https://es.wikipedia.org/wiki/Giardia_lamblia">10. Giardia lamblia</a></string>
     <string name="backButtonText">BACK</string>
+    <string name="loadingText">Loading, please wait.</string>
 </resources>

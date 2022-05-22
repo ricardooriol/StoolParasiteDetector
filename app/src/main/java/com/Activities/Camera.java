@@ -1,6 +1,7 @@
 package com.Activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -55,15 +56,18 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
         warningsText = findViewById(R.id.warningsText);
 
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            Object[] results;
-            APIConnection APIConnection = new APIConnection();
+            Object[] results = new Object[2];
+            TensorflowImageProcessor tensorflowImageProcessor = new TensorflowImageProcessor();
 
             if ((result.getResultCode() == RESULT_OK) && (result.getData() != null) && flag == 1) {
                 bitmap = BitmapFactory.decodeFile(currentPhotoPath);
-                results = APIConnection.sendAndReceive(bitmap);
+                results[0] = bitmap;
+                results = tensorflowImageProcessor.processImage(results);
                 bitmap = (Bitmap) results[0];
                 int resultCode = (int) results[1];
                 if (resultCode == 1) {
+                    takePictureButton.setVisibility(View.INVISIBLE);
+                    uploadPictureButton.setVisibility((View.INVISIBLE));
                     cameraIntroductionText.setVisibility(View.INVISIBLE);
                     takenPicture.setImageBitmap(bitmap);
                     Snackbar snack = makeCustomSnackbar("Image successfully processed!");
@@ -71,15 +75,19 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
                     savePictureButton.setVisibility(View.VISIBLE);
 
                 } else if (resultCode == 2) {
-                    Snackbar snack = makeCustomSnackbar("The image does not meet the required specifications, please try a different one.");
+                    takePictureButton.setVisibility(View.INVISIBLE);
+                    uploadPictureButton.setVisibility((View.INVISIBLE));
+                    cameraIntroductionText.setVisibility(View.INVISIBLE);
+                    takenPicture.setImageBitmap(bitmap);
+                    Snackbar snack = makeCustomSnackbar("No parasites were detected in your image.");
                     snack.show();
 
                 } else if (resultCode == 3) {
-                    Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again.");
+                    Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again later.");
                     snack.show();
 
                 } else {
-                    Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again.");
+                    Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again later.");
                     snack.show();
                 }
                 flag = 0;
@@ -92,10 +100,13 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                results = APIConnection.sendAndReceive(bitmap);
+                results[0] = bitmap;
+                results = tensorflowImageProcessor.processImage(results);
                 bitmap = (Bitmap) results[0];
                 int resultCode = (int) results[1];
                 if (resultCode == 1) {
+                    takePictureButton.setVisibility(View.INVISIBLE);
+                    uploadPictureButton.setVisibility((View.INVISIBLE));
                     cameraIntroductionText.setVisibility(View.INVISIBLE);
                     takenPicture.setImageBitmap(bitmap);
                     Snackbar snack = makeCustomSnackbar("Image successfully processed!");
@@ -103,15 +114,19 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
                     savePictureButton.setVisibility(View.VISIBLE);
 
                 } else if (resultCode == 2) {
-                    Snackbar snack = makeCustomSnackbar("The image does not meet the required specifications, please try a different one.");
+                    takePictureButton.setVisibility(View.INVISIBLE);
+                    uploadPictureButton.setVisibility((View.INVISIBLE));
+                    cameraIntroductionText.setVisibility(View.INVISIBLE);
+                    takenPicture.setImageBitmap(bitmap);
+                    Snackbar snack = makeCustomSnackbar("No parasites were detected in your image.");
                     snack.show();
 
                 } else if (resultCode == 3) {
-                    Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again.");
+                    Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again later.");
                     snack.show();
 
                 } else if (resultCode == 0) {
-                    Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again.");
+                    Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again later.");
                     snack.show();
                 }
                 flag = 0;
@@ -186,8 +201,18 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
         return snack;
     }
 
+    private ProgressDialog makeProgressDialog() {
+        ProgressDialog nDialog;
+        nDialog = new ProgressDialog(this.getApplicationContext());
+        nDialog.setMessage("Loading, please wait.");
+        nDialog.setIndeterminate(false);
+        nDialog.setCancelable(true);
+        return nDialog;
+    }
+
     @Override
     public void onClick(View view) {
+
     }
 
 }

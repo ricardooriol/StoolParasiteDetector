@@ -47,4 +47,7 @@ public class MainActivity extends AppCompatActivity {
         return network != null;
     }
 
+    public Context getContext(){
+        return this.context;
+    }
 }
