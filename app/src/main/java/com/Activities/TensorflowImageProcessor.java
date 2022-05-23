@@ -121,7 +121,7 @@ public class TensorflowImageProcessor {
             List<Float> detectionScores = response.getOutputsMap().get("detection_scores").getFloatValList();
             float numDetections = response.getOutputsMap().get("num_detections").getFloatValList().get(0);
             for (int i = 0; i < numDetections; i++) {
-                if (detectionScores.get(i) < 0.8f) break;
+                if (detectionScores.get(i) < 0.6f) break;
                 //maxIndex = detectionScores.get(i) > detectionScores.get(maxIndex + 1) ? i : maxIndex;
                 float ymin = detectionBoxes.get(i * 4);
                 float xmin = detectionBoxes.get(i * 4 + 1);
