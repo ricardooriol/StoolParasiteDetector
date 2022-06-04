@@ -6,14 +6,14 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class HowItWorks extends AppCompatActivity {
+public class License extends AppCompatActivity {
 
     Button goBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_how_it_works);
+        setContentView(R.layout.activity_license);
         goBackButton = findViewById(R.id.goBackButton);
         goBackButton.setOnClickListener(v -> goBack());
     }

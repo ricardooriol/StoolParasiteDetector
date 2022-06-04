@@ -13,8 +13,8 @@
         android:layout_height="48dp"
         android:background="@drawable/my_button_style"
         android:text="@string/backButtonText"
-        android:textStyle="bold"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -36,6 +36,7 @@
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.30" />
+        app:layout_constraintVertical_bias="0.30"
+        tools:targetApi="o" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

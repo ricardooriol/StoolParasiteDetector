@@ -1,6 +1,7 @@
 package com.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -41,7 +42,7 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera_version2);
+        setContentView(R.layout.activity_camera);
         ViewSwitcher viewSwitcher = findViewById(R.id.viewSwitcher);
         viewSwitcher.setDisplayedChild(R.id.cameraLayout);
         Button goBackButton = findViewById(R.id.goBackButton);
@@ -53,7 +54,7 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
         TextView cameraIntroductionText = findViewById((R.id.cameraIntroductionText));
         warningsText = findViewById(R.id.warningsText);
 
-        ActivityResultLauncher activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             Object[] results = new Object[2];
             TensorflowImageProcessor tensorflowImageProcessor = new TensorflowImageProcessor();
 
@@ -158,7 +159,7 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
         });
 
         savePictureButton.setOnClickListener(view -> {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
             String imageName = "processedImage_".concat(timeStamp).concat(".jpg");
             MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, imageName, "This image was processed By the Stoop Parasite Detector App.");
             savePictureButton.setVisibility(View.INVISIBLE);
@@ -201,6 +202,5 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-
     }
 }

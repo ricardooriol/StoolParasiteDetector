@@ -54,7 +54,7 @@ configurations {
     all*.exclude module: 'hamcrest-core'
 }
 
-//code to generate the protobuf files
+//Code to generate the protobuf files
 protobuf {
     protoc {
         artifact = artifact = 'com.google.protobuf:protoc:3.11.0'
@@ -77,9 +77,9 @@ protobuf {
 }
 
 dependencies {
-
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
+    //General dependencies
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.navigation:navigation-fragment:2.4.2'
     implementation 'androidx.navigation:navigation-ui:2.4.2'
     testImplementation 'junit:junit:4.13.2'
@@ -108,6 +108,5 @@ dependencies {
 
     //JSON dependencies
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-
-
+    implementation group: 'org.unix4j', name: 'unix4j-command', version: '0.5'
 }

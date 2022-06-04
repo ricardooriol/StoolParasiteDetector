@@ -8,14 +8,19 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.URLSpan;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class ListOfParasites extends AppCompatActivity {
 
+    private final MainActivity mainActivity = new MainActivity();
     Button goBackButton;
 
     @Override
@@ -24,62 +29,39 @@ public class ListOfParasites extends AppCompatActivity {
         setContentView(R.layout.activity_list_of_parasites);
         goBackButton = findViewById(R.id.goBackButton);
         goBackButton.setOnClickListener(v -> goBack());
-
-        TextView Trichuris = findViewById(R.id.Trichuris);
-        Trichuris.setMovementMethod(LinkMovementMethod.getInstance());
-        Trichuris.setLinkTextColor(BLACK);
-        stripUnderlines(Trichuris);
-
-        TextView Ascaris = findViewById(R.id.Ascaris);
-        Ascaris.setMovementMethod(LinkMovementMethod.getInstance());
-        Ascaris.setLinkTextColor(BLACK);
-        stripUnderlines(Ascaris);
-
-        TextView Uncinaria = findViewById(R.id.Uncinaria);
-        Uncinaria.setMovementMethod(LinkMovementMethod.getInstance());
-        Uncinaria.setLinkTextColor(BLACK);
-        stripUnderlines(Uncinaria);
-
-        TextView Diphyllobothrium = findViewById(R.id.Diphyllobothrium);
-        Diphyllobothrium.setMovementMethod(LinkMovementMethod.getInstance());
-        Diphyllobothrium.setLinkTextColor(BLACK);
-        stripUnderlines(Diphyllobothrium);
-
-        TextView Taenia = findViewById(R.id.Taenia);
-        Taenia.setMovementMethod(LinkMovementMethod.getInstance());
-        Taenia.setLinkTextColor(BLACK);
-        stripUnderlines(Taenia);
-
-        TextView Balantidium = findViewById(R.id.Balantidium);
-        Balantidium.setMovementMethod(LinkMovementMethod.getInstance());
-        Balantidium.setLinkTextColor(BLACK);
-        stripUnderlines(Balantidium);
-
-        TextView Hymenolepis = findViewById(R.id.Hymenolepis);
-        Hymenolepis.setMovementMethod(LinkMovementMethod.getInstance());
-        Hymenolepis.setLinkTextColor(BLACK);
-        stripUnderlines(Hymenolepis);
-
-        TextView Enterobius = findViewById(R.id.Enterobius);
-        Enterobius.setMovementMethod(LinkMovementMethod.getInstance());
-        Enterobius.setLinkTextColor(BLACK);
-        stripUnderlines(Enterobius);
-
-        TextView Amoeba = findViewById(R.id.Amoeba);
-        Amoeba.setMovementMethod(LinkMovementMethod.getInstance());
-        Amoeba.setLinkTextColor(BLACK);
-        stripUnderlines(Amoeba);
-
-        TextView Giardia = findViewById(R.id.Giardia);
-        Giardia.setMovementMethod(LinkMovementMethod.getInstance());
-        Giardia.setLinkTextColor(BLACK);
-        stripUnderlines(Giardia);
+        TextView listOfParasites = findViewById(R.id.listOfParasites);
+        listOfParasites.setText(getParasiteList());
+        listOfParasites.setMovementMethod(new ScrollingMovementMethod());
+        TextView CDCWebsite = findViewById(R.id.CDCWebsiteText);
+        CDCWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+        CDCWebsite.setLinkTextColor(BLACK);
+        stripUnderlines(CDCWebsite);
     }
 
     private void goBack() {
-        Intent intent = new Intent(this, com.Activities.MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private String getParasiteList() {
+        StringBuilder parasitesFullList = new StringBuilder();
+        String parasiteName;
+        int id;
+        try {
+            String JSON = JSONFileHandler.readJSON(mainActivity.getContext());
+            JSONObject object = new JSONObject(JSON);
+            JSONArray jsonArray = object.getJSONArray("parasites");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject parasite = jsonArray.getJSONObject(i);
+                id = (Integer) parasite.get("id");
+                parasiteName = (String) parasite.get("display_name");
+                parasitesFullList.append(id).append(".- ").append(parasiteName).append("\n\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return parasitesFullList.toString();
     }
 
     private void stripUnderlines(TextView textView) {
@@ -95,7 +77,7 @@ public class ListOfParasites extends AppCompatActivity {
         textView.setText(s);
     }
 
-    private class URLSpanNoUnderline extends URLSpan {
+    private static class URLSpanNoUnderline extends URLSpan {
         public URLSpanNoUnderline(String url) {
             super(url);
         }
@@ -105,6 +87,6 @@ public class ListOfParasites extends AppCompatActivity {
             super.updateDrawState(ds);
             ds.setUnderlineText(false);
         }
-    }
 
+    }
 }

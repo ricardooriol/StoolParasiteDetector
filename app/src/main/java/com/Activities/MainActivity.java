@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this.getApplicationContext();
+        JSONFileHandler JSONFileHandler = new JSONFileHandler(context);
+        JSONFileHandler.loadJSON();
+
     }
 
     public void start(View view) {
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    public void howToUse(View view) {
+    public void howItWorks(View view) {
         Intent intent = new Intent(this, HowItWorks.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -40,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
+    public void showLicense(View view) {
+        Intent intent = new Intent(this, License.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
     public boolean internetConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         Network network = connectivityManager.getActiveNetwork();
@@ -47,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         return network != null;
     }
 
-    public Context getContext(){
-        return this.context;
+    public Context getContext() {
+        return context;
     }
 }
+
