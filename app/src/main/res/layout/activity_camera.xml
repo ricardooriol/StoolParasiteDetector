@@ -128,16 +128,16 @@
         android:id="@+id/loadingText"
         android:layout_width="220dp"
         android:layout_height="70dp"
-        android:justificationMode="inter_word"
         android:text="@string/loadingText"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.638"
+        app:layout_constraintVertical_bias="0.664"
         tools:targetApi="o" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

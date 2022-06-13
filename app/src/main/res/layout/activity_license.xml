@@ -24,19 +24,18 @@
         tools:ignore="TextContrastCheck" />
 
     <TextView
-        android:id="@+id/howItWorksText"
-        android:layout_width="330dp"
-        android:layout_height="300dp"
+        android:id="@+id/licenseText"
+        android:layout_width="357dp"
+        android:layout_height="469dp"
         android:justificationMode="inter_word"
+        android:scrollbars="vertical"
         android:text="@string/licenseText"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.30"
         tools:targetApi="o" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,8 +11,8 @@
     <string name="welcomeText">Welcome to the Stool PArasite DEtector \n(SPADE)</string>
     <string name="poweredByCEU">Powered by San Pablo CEU University</string>
     <string name="appExplanationText">This App allows the user to submit images taken with a
-        microscope, in order to detect the presence of enteric parasites in human stool samples. This App is
-        intended to help in coprological analysis.</string>
+        microscope, in order to detect the presence of enteric parasites in human stool samples.
+        This App is intended to help in coprological analysis.</string>
     <string name="startButtonText">START</string>
     <string name="howItWorksButtonText">HOW IT WORKS</string>
     <string name="listOfParasitesButtonText">LIST OF PARASITES</string>
@@ -21,15 +21,33 @@
         sent to the algorithm in order to be meticulously analysed and processed. If everything goes
         according to plan, you will see the same picture displayed, but with annotations surrounding
         the microorganisms which were found by the algorithm. \n\nAfter that, the annotated image
-        will be saved to a database for research purposes, and you can also save it to your Camera Roll!</string>
+        will be saved to a database for research purposes, and you can also save it to your Camera
+        Roll!</string>
     <string name="listOfParasitesIntroductionText">This App, with the use of machine learning
         technology, can detect many different species of parasites that are occasionally present
         in human stool.</string>
-    <string name="CDCWebsite"><a href="https://www.cdc.gov/dpdx/az.html">To see detailed information about these fascinating little organisms, go check them out at:\nhttps://www.cdc.gov/dpdx/az.html</a></string>
+    <string name="CDCWebsite"><a href="https://www.cdc.gov/dpdx/az.html">To see detailed information
+        about these fascinating little organisms, go check them out at:
+        \nhttps://www.cdc.gov/dpdx/az.html</a></string>
     <string name="backButtonText">BACK</string>
-    <string name="loadingText">Your image is being processed, please wait...</string>
+    <string name="loadingText">Your image is being processed, please wait…</string>
     <string name="licenseButtonText">LICENSE</string>
-    <string name="licenseText">LICENSE UNDER CONSTRUCTION…</string>
+    <string name="licenseText">MIT License\n\nCopyright © 2022 Ricardo Oriol Rocabert\n\n
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:\n\n
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.\n\n
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.</string>
     <string name="fortyX">40X</string>
 
 </resources>
