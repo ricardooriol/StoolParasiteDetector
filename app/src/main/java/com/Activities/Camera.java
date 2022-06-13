@@ -127,7 +127,7 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
 
         savePictureButton.setOnClickListener(view -> {
             @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            String imageName = "processedImage_".concat(timeStamp).concat(".jpg");
+            String imageName = "SPADE_processedImage_".concat(timeStamp).concat(".jpg");
             MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, imageName, "This image was processed By the Stoop Parasite Detector App.");
             savePictureButton.setVisibility(View.INVISIBLE);
             Snackbar snack = makeCustomSnackbar("The image was saved to your Camera Roll.");

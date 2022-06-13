@@ -128,6 +128,7 @@ public class TensorflowImageProcessor {
                 float detectionClass = detectionClasses.get(i);
                 int parasiteID = (int) detectionClass;
                 String parasiteName = getParasiteName(parasiteID);
+                parasiteName += " " + (int)((float) detectionScores.get(i)) + "%";
                 results[0] = displayResult(results, ymin, xmin, ymax, xmax, parasiteName);
                 numParasites++;
             }
