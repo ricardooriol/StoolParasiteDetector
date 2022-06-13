@@ -87,6 +87,5 @@ public class ListOfParasites extends AppCompatActivity {
             super.updateDrawState(ds);
             ds.setUnderlineText(false);
         }
-
     }
 }

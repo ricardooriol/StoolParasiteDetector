@@ -23,14 +23,16 @@ import tensorflow.serving.Predict;
 import tensorflow.serving.PredictionServiceGrpc;
 
 
+@SuppressWarnings("ALL")
 public class TensorflowImageProcessor {
+
     private ManagedChannel channel;
     private PredictionServiceGrpc.PredictionServiceBlockingStub stub;
     private int numParasites = 0;
+    private final float sensitivity = 0.5f;
     private final MainActivity mainActivity = new MainActivity();
 
     public Object[] processImage(Object[] results) {
-
         if (mainActivity.internetConnection()) {
             try {
                 Predict.PredictRequest request = createGRPCRequest((Bitmap) results[0]);
@@ -102,26 +104,22 @@ public class TensorflowImageProcessor {
                 tensorProtoBuilder.addIntVal((pixel) & 0xff);
             }
         }
-
         TensorProto tensorProto = tensorProtoBuilder.build();
         builder.putInputs("input_tensor", tensorProto);
         builder.addOutputFilter("num_detections");
         builder.addOutputFilter("detection_boxes");
         builder.addOutputFilter("detection_classes");
         builder.addOutputFilter("detection_scores");
-
         return builder.build();
     }
 
     private void postProcessGRPCResponse(Predict.PredictResponse response, Object[] results) {
         try {
-            //int maxIndex = 0;
             List<Float> detectionBoxes = Objects.requireNonNull(response.getOutputsMap().get("detection_boxes")).getFloatValList();
             List<Float> detectionScores = Objects.requireNonNull(response.getOutputsMap().get("detection_scores")).getFloatValList();
             float numDetections = Objects.requireNonNull(response.getOutputsMap().get("num_detections")).getFloatValList().get(0);
             for (int i = 0; i < numDetections; i++) {
-                if (detectionScores.get(i) < 0.6f) break;
-                //maxIndex = detectionScores.get(i) > detectionScores.get(maxIndex + 1) ? i : maxIndex;
+                if (detectionScores.get(i) < sensitivity) break;
                 float ymin = detectionBoxes.get(i * 4);
                 float xmin = detectionBoxes.get(i * 4 + 1);
                 float ymax = detectionBoxes.get(i * 4 + 2);
@@ -135,7 +133,6 @@ public class TensorflowImageProcessor {
             }
         } catch (NullPointerException npe) {
             npe.printStackTrace();
-
         }
     }
 
@@ -178,7 +175,7 @@ public class TensorflowImageProcessor {
         paint.setStrokeWidth(4);
         paint.setColor(WHITE);
         paint.setTextSize(60);
-        canvas.drawText(parasiteName, 0, 0, paint);
+        canvas.drawText(parasiteName, left, top, paint);
         numParasites++;
         return resultInputBitmap;
     }

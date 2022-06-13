@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         context = this.getApplicationContext();
         JSONFileHandler JSONFileHandler = new JSONFileHandler(context);
         JSONFileHandler.loadJSON();
-
     }
 
     public void start(View view) {
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean internetConnection() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         Network network = connectivityManager.getActiveNetwork();
-
         return network != null;
     }
 
@@ -60,4 +58,3 @@ public class MainActivity extends AppCompatActivity {
         return context;
     }
 }
-

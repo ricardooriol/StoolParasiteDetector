@@ -25,9 +25,9 @@
     <string name="listOfParasitesIntroductionText">This App, with the use of machine learning
         technology, can detect many different species of parasites that are occasionally present
         in human stool.</string>
-    <string name="CDCWebsite"><a href="https://www.cdc.gov/dpdx/az.html">You can check them out on https://www.cdc.gov/dpdx/az.html for detailed information about these fascinating organisms.</a></string>
+    <string name="CDCWebsite"><a href="https://www.cdc.gov/dpdx/az.html">To see detailed information about these fascinating little organisms, go check them out at:\nhttps://www.cdc.gov/dpdx/az.html</a></string>
     <string name="backButtonText">BACK</string>
-    <string name="loadingText">Loading, please wait.</string>
+    <string name="loadingText">Your image is being processed, please wait...</string>
     <string name="licenseButtonText">LICENSE</string>
     <string name="licenseText">LICENSE UNDER CONSTRUCTION…</string>
     <string name="fortyX">40X</string>

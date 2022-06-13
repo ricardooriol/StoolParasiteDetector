@@ -7,7 +7,6 @@
     android:background="@drawable/my_gradient_background"
     tools:context=".MainActivity">
 
-
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
@@ -27,7 +26,7 @@
         android:id="@+id/startButton"
         android:layout_width="207dp"
         android:layout_height="107dp"
-        android:background="@drawable/my_button_style"
+        android:background="@drawable/start_button_style"
         android:onClick="start"
         android:text="@string/startButtonText"
         android:textSize="50sp"
@@ -39,7 +38,7 @@
         app:layout_constraintVertical_bias="0.264" />
 
     <TextView
-        android:id="@+id/appExplanationText"
+        android:id="@+id/logoSanPabloCEU"
         android:layout_width="272dp"
         android:layout_height="70dp"
         android:gravity="center"
@@ -57,25 +56,10 @@
         tools:targetApi="o" />
 
     <Button
-        android:id="@+id/listOfParasitesButton"
-        android:layout_width="185dp"
-        android:layout_height="52dp"
-        android:background="@drawable/my_button_style"
-        android:onClick="listOfParasites"
-        android:text="@string/listOfParasitesButtonText"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.643" />
-
-    <Button
         android:id="@+id/howItWorksButton"
         android:layout_width="185dp"
         android:layout_height="52dp"
-        android:background="@drawable/my_button_style"
+        android:background="@drawable/general_button_style"
         android:onClick="howItWorks"
         android:text="@string/howItWorksButtonText"
         android:textSize="18sp"
@@ -84,13 +68,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.762" />
+        app:layout_constraintVertical_bias="0.689" />
+
+    <Button
+        android:id="@+id/listOfParasitesButton"
+        android:layout_width="185dp"
+        android:layout_height="52dp"
+        android:background="@drawable/general_button_style"
+        android:onClick="listOfParasites"
+        android:text="@string/listOfParasitesButtonText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.805" />
 
     <Button
         android:id="@+id/licenseButton"
         android:layout_width="90dp"
         android:layout_height="50dp"
-        android:background="@drawable/my_button_style"
+        android:background="@drawable/general_button_style"
         android:onClick="showLicense"
         android:text="@string/licenseButtonText"
         android:textSize="18sp"
@@ -101,5 +100,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/warningsText"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

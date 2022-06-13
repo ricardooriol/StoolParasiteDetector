@@ -11,7 +11,7 @@
         android:id="@+id/goBackButton"
         android:layout_width="75dp"
         android:layout_height="48dp"
-        android:background="@drawable/my_button_style"
+        android:background="@drawable/general_button_style"
         android:text="@string/backButtonText"
         android:textSize="18sp"
         android:textStyle="bold"

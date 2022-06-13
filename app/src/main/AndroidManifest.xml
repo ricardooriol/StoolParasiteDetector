@@ -27,6 +27,7 @@
         <activity
             android:name=".Camera"
             android:exported="false"
+            android:launchMode="singleTask"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ListOfParasites"
