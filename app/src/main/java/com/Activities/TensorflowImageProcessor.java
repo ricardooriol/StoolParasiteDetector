@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import tensorflow.serving.Model;
 import tensorflow.serving.Predict;
 import tensorflow.serving.PredictionServiceGrpc;
@@ -39,6 +40,12 @@ public class TensorflowImageProcessor {
                 Predict.PredictResponse response = stub.predict(request);
                 postProcessGRPCResponse(response, results);
                 channel.shutdownNow();
+            } catch (StatusRuntimeException sre) {
+                //THE SERVER IS OFFLINE
+                sre.printStackTrace();
+                results[1] = 4;
+                channel.shutdownNow();
+                return results;
             } catch (Exception e) {
                 //THERE WAS AN UNEXPECTED ERROR
                 e.printStackTrace();

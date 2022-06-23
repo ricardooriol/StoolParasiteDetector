@@ -201,7 +201,11 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
             Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again later.");
             snack.show();
 
-        } else {
+        } else if (resultCode == 4) {
+            Snackbar snack = makeCustomSnackbar("The server is currently offline, please try again later.");
+            snack.show();
+
+        }else {
             Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again later.");
             snack.show();
         }
