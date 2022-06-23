@@ -3,19 +3,23 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://chaquo.com/maven" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.0'
-        classpath "com.chaquo.python:gradle:7.0.2"
+        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'com.netflix.nebula:gradle-lint-plugin:latest.release'
     }
 }
+
 plugins {
-    id 'com.android.application' version '7.2.0' apply false
-    id 'com.android.library' version '7.2.0' apply false
+    id 'com.android.application' version '7.2.1' apply false
+    id 'com.android.library' version '7.2.1' apply false
+    id "nebula.lint" version "16.9.0"
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+wrapper {
+    gradleVersion = '7.4.2'
+}

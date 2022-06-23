@@ -1,6 +1,7 @@
 package com.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,8 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -33,70 +34,51 @@ import java.util.Calendar;
 
 public class Camera extends AppCompatActivity implements View.OnClickListener {
 
-    private ViewSwitcher viewSwitcher;
-    private ActivityResultLauncher<Intent> activityResultLauncher;
-    private Button savePictureButton;
-    private ImageView takenPicture;
-    private TextView cameraIntroductionText;
+    private ImageView processedPicture;
     private TextView warningsText;
     private Bitmap bitmap;
     private String currentPhotoPath;
     private int flag = 0;
-
+    private Object[] results = new Object[2];
+    private Button goBackButton;
+    private Button takePictureButton;
+    private Button uploadPictureButton;
+    private Button savePictureButton;
+    private TextView microscopePicture;
+    private ProgressBar progressBar;
+    private TextView loadingText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera_version2);
-        Button goBackButton = findViewById(R.id.goBackButton);
-        viewSwitcher = findViewById(R.id.viewSwitcher);
-        viewSwitcher.setDisplayedChild(R.id.cameraLayout);
+        setContentView(R.layout.activity_camera);
+        goBackButton = findViewById(R.id.goBackButton);
         goBackButton.setOnClickListener(v -> goBack());
-        Button takePictureButton = findViewById(R.id.takePictureButton);
-        Button uploadPictureButton = findViewById(R.id.uploadPictureButton);
+        takePictureButton = findViewById(R.id.takePictureButton);
+        uploadPictureButton = findViewById(R.id.uploadPictureButton);
         savePictureButton = findViewById(R.id.savePictureButton);
-        takenPicture = findViewById(R.id.takenPicture);
-        cameraIntroductionText = findViewById((R.id.cameraIntroductionText));
+        processedPicture = findViewById(R.id.processedPicture);
+        microscopePicture = findViewById(R.id.microscopePicture);
         warningsText = findViewById(R.id.warningsText);
+        progressBar = findViewById(R.id.progressBar);
+        loadingText = findViewById(R.id.loadingText);
 
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            Object[] results = new Object[2];
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             TensorflowImageProcessor tensorflowImageProcessor = new TensorflowImageProcessor();
-
-            if ((result.getResultCode() == RESULT_OK) && (result.getData() != null) && flag == 1) {
+            if ((result.getResultCode() == RESULT_OK) && (result.getData() != null) && (flag == 1)) {
                 bitmap = BitmapFactory.decodeFile(currentPhotoPath);
                 results[0] = bitmap;
-                results = tensorflowImageProcessor.processImage(results);
-                bitmap = (Bitmap) results[0];
-                int resultCode = (int) results[1];
-                if (resultCode == 1) {
-                    takePictureButton.setVisibility(View.INVISIBLE);
-                    uploadPictureButton.setVisibility((View.INVISIBLE));
-                    cameraIntroductionText.setVisibility(View.INVISIBLE);
-                    takenPicture.setImageBitmap(bitmap);
-                    Snackbar snack = makeCustomSnackbar("Image successfully processed!");
-                    snack.show();
-                    savePictureButton.setVisibility(View.VISIBLE);
-
-                } else if (resultCode == 2) {
-                    takePictureButton.setVisibility(View.INVISIBLE);
-                    uploadPictureButton.setVisibility((View.INVISIBLE));
-                    cameraIntroductionText.setVisibility(View.INVISIBLE);
-                    takenPicture.setImageBitmap(bitmap);
-                    Snackbar snack = makeCustomSnackbar("No parasites were detected in your image.");
-                    snack.show();
-
-                } else if (resultCode == 3) {
-                    Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again later.");
-                    snack.show();
-
-                } else {
-                    Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again later.");
-                    snack.show();
-                }
-                flag = 0;
-
-            } else if ((result.getResultCode() == RESULT_OK) && (result.getData() != null) && flag == 2) {
+                goBackButton.setVisibility(View.INVISIBLE);
+                takePictureButton.setVisibility(View.INVISIBLE);
+                uploadPictureButton.setVisibility(View.INVISIBLE);
+                microscopePicture.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                loadingText.setVisibility(View.VISIBLE);
+                new Thread(() -> {
+                    results = tensorflowImageProcessor.processImage(results);
+                    runOnUiThread(() -> displayBitmap(results));
+                }).start();
+            } else if ((result.getResultCode() == RESULT_OK) && (result.getData() != null) && (flag == 2)) {
                 Intent data = result.getData();
                 Uri imageUri = data.getData();
                 try {
@@ -105,35 +87,16 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
                     e.printStackTrace();
                 }
                 results[0] = bitmap;
-                results = tensorflowImageProcessor.processImage(results);
-                bitmap = (Bitmap) results[0];
-                int resultCode = (int) results[1];
-                if (resultCode == 1) {
-                    takePictureButton.setVisibility(View.INVISIBLE);
-                    uploadPictureButton.setVisibility((View.INVISIBLE));
-                    cameraIntroductionText.setVisibility(View.INVISIBLE);
-                    takenPicture.setImageBitmap(bitmap);
-                    Snackbar snack = makeCustomSnackbar("Image successfully processed!");
-                    snack.show();
-                    savePictureButton.setVisibility(View.VISIBLE);
-
-                } else if (resultCode == 2) {
-                    takePictureButton.setVisibility(View.INVISIBLE);
-                    uploadPictureButton.setVisibility((View.INVISIBLE));
-                    cameraIntroductionText.setVisibility(View.INVISIBLE);
-                    takenPicture.setImageBitmap(bitmap);
-                    Snackbar snack = makeCustomSnackbar("No parasites were detected in your image.");
-                    snack.show();
-
-                } else if (resultCode == 3) {
-                    Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again later.");
-                    snack.show();
-
-                } else if (resultCode == 0) {
-                    Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again later.");
-                    snack.show();
-                }
-                flag = 0;
+                goBackButton.setVisibility(View.INVISIBLE);
+                takePictureButton.setVisibility(View.INVISIBLE);
+                uploadPictureButton.setVisibility(View.INVISIBLE);
+                microscopePicture.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                loadingText.setVisibility(View.VISIBLE);
+               new Thread(() -> {
+                    results = tensorflowImageProcessor.processImage(results);
+                    runOnUiThread(() -> displayBitmap(results));
+                }).start();
             }
         });
 
@@ -142,7 +105,6 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
             String fileName = "photo";
             File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             Intent intent = null;
-
             try {
                 File imageFile = File.createTempFile(fileName, ".jpg", storageDirectory);
                 currentPhotoPath = imageFile.getAbsolutePath();
@@ -158,14 +120,15 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
 
         uploadPictureButton.setOnClickListener(view -> {
             verifyPermissions();
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
             flag = 2;
             activityResultLauncher.launch(intent);
         });
 
         savePictureButton.setOnClickListener(view -> {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            String imageName = "processedImage_".concat(timeStamp).concat(".jpg");
+            @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            String imageName = "SPADE_processedImage_".concat(timeStamp).concat(".jpg");
             MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, imageName, "This image was processed By the Stoop Parasite Detector App.");
             savePictureButton.setVisibility(View.INVISIBLE);
             Snackbar snack = makeCustomSnackbar("The image was saved to your Camera Roll.");
@@ -173,10 +136,15 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
+    @Override
+    public void onClick(View view) {
+    }
+
     private void goBack() {
         Intent intent = new Intent(this, com.Activities.MainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        finish();
     }
 
     private void verifyPermissions() {
@@ -205,8 +173,38 @@ public class Camera extends AppCompatActivity implements View.OnClickListener {
         return snack;
     }
 
-    @Override
-    public void onClick(View view) {
 
+    private void displayBitmap(Object[] results) {
+        bitmap = (Bitmap) results[0];
+        int resultCode = (int) results[1];
+        progressBar.setVisibility(View.INVISIBLE);
+        loadingText.setVisibility(View.INVISIBLE);
+        goBackButton.setVisibility(View.VISIBLE);
+        if (resultCode == 1) {
+            takePictureButton.setVisibility(View.INVISIBLE);
+            uploadPictureButton.setVisibility((View.INVISIBLE));
+            microscopePicture.setVisibility(View.INVISIBLE);
+            processedPicture.setImageBitmap(bitmap);
+            Snackbar snack = makeCustomSnackbar("Image successfully processed!");
+            snack.show();
+            savePictureButton.setVisibility(View.VISIBLE);
+
+        } else if (resultCode == 2) {
+            takePictureButton.setVisibility(View.INVISIBLE);
+            uploadPictureButton.setVisibility((View.INVISIBLE));
+            microscopePicture.setVisibility(View.INVISIBLE);
+            processedPicture.setImageBitmap(bitmap);
+            Snackbar snack = makeCustomSnackbar("No parasites were detected in your image.");
+            snack.show();
+
+        } else if (resultCode == 3) {
+            Snackbar snack = makeCustomSnackbar("It seems you do not have a working internet connection, please try again later.");
+            snack.show();
+
+        } else {
+            Snackbar snack = makeCustomSnackbar("There was an unexpected error, please try again later.");
+            snack.show();
+        }
+        flag = 0;
     }
 }
